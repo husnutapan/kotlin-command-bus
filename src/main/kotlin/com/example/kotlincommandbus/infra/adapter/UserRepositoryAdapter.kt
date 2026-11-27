@@ -3,6 +3,7 @@ package com.example.kotlincommandbus.infra.adapter
 import com.example.kotlincommandbus.infra.port.UserPort
 import com.example.kotlincommandbus.model.User
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class UserRepositoryAdapter: UserPort {
@@ -16,5 +17,9 @@ class UserRepositoryAdapter: UserPort {
 
     override fun findAll(): List<User> {
         return userStore
+    }
+
+    override fun findById(id: UUID): User? {
+        return userStore.find { it.id == id }
     }
 }
