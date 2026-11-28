@@ -44,24 +44,16 @@ never kill by process name.
 
 ## What to look for
 
-This project is a Kotlin/Spring Boot JSON API with no web pages or screens —
-its "users" are API callers: other services, scripts, or someone testing with
-curl/Postman. Read the flow as a request/response contract, not a page:
+- The flow does what the spec promises, with no dead ends.
+- Loading, empty and error states exist and say something useful.
+- Each kind of user the change affects (signed out, signed in, different roles)
+  gets a sensible path, following the patterns the app already uses.
+- The copy is short, plain and consistent with the rest of the app.
+- Accessibility: real buttons and links, labels, focus order, keyboard use, and
+  alt text.
+- Mobile: it works at phone width.
 
-- The endpoint does what the spec promises, with no dead ends in the
-  request/response cycle.
-- Success and error responses say something useful: correct HTTP status
-  codes, and error bodies that tell the caller what went wrong without
-  leaking internals.
-- Each kind of caller the change affects gets a sensible contract (e.g. a
-  missing or malformed field in a command like `SaveUserCommand` should fail
-  clearly, not silently produce a wrong `User`).
-- Field names and response shapes are consistent with the rest of the API
-  (`model/User.kt`, the existing `application/*` command/use-case pairs).
-
-If the branch adds an actual web page or UI, review it like a visitor would
-(see below). If the branch has no user-facing or API-contract change, write
-PASS and say so.
+If the branch has no user-facing change, write PASS and say so.
 
 ## Write review-ux.md
 

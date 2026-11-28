@@ -27,13 +27,7 @@ that, scoped so it can land as one small pull request.
 
 ## Decide
 
-This project is a Kotlin/Spring Boot sample demonstrating a command-bus
-(CQRS-lite) pattern: REST controllers dispatch `Request` objects through a
-`Bus` to `Handler`s resolved from Spring's `ApplicationContext` via a
-reflection-based `Registry`. It has no auth, no real database (in-memory
-adapters), and no frontend — work that fits belongs in that pattern: new
-commands/handlers, new use cases, new REST endpoints, or tests and
-documentation for the existing bus.
+This project is a Kotlin/Spring Boot sample of a command-bus (CQRS-lite) pattern: features are new `Request`/`Handler` use cases dispatched through the `Bus`. Anything unrelated to that belongs elsewhere.
 
 - **ACCEPT** when the request is clear, fits the project, and can be built and
   reviewed as one pull request. If it is too big, accept a smaller first slice

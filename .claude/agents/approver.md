@@ -48,15 +48,11 @@ ESCALATE if any of them fails, or if the change:
   and storage security rules;
 - changes deploy, CI or hosting config;
 - migrates a database schema, sends email, writes production data, or adds a
-  dependency (a new entry in `build.gradle.kts`);
-- modifies the command-bus core abstractions — `config/Bus.kt`, `Handler.kt`,
-  `Registry.kt`, `CommandProvider.kt`, `Request.kt`, or `config/decorator/`.
-  These are shared by every handler in the app; a human should see any change
-  to how commands are registered or dispatched.
-- replaces an in-memory adapter (e.g. `UserRepositoryAdapter`) with a real
-  database, external service or persistence layer;
+  dependency;
 - rests on a spec Assumption that is really a product or business decision, such
   as pricing, public copy about the business, or what is free versus paid.
+
+Tailor these lists to the project: what must a human always see here?
 
 ## Write decision.md
 

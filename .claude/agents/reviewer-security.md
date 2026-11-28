@@ -31,33 +31,20 @@ is in the main checkout; your one file goes there.
 
 ## What to look for
 
-This is a small Kotlin/Spring Boot sample app that demonstrates a command-bus
-pattern (`config/Bus.kt`, `Handler.kt`, `Registry.kt`, `CommandProvider.kt`).
-There is no authentication layer and no real database today (`UserPort` is
-backed by an in-memory `mutableListOf` in `UserRepositoryAdapter`), so most
-findings will be about what a change introduces, not what's already here.
-
-- **New endpoints**: every new `@RestController`/`@*Mapping` method — does it
-  need auth or ownership checks it doesn't have, given what it now exposes?
-- **Command/request bodies**: `Request<RES>` implementations bound via
-  `@RequestBody` are deserialized directly from client JSON. Flag fields that
-  should never be client-settable (ids, roles, flags) reaching a `Handler`
-  unchecked.
-- **Registry and reflection**: `Registry.register` resolves handler generics
-  and keys a `providerMap` by command class. A new `Handler`/`Request` pair
-  that collides with or shadows an existing command type, or that breaks the
-  `!!`/cast assumptions in `Registry.get`, is a real bug here.
-- **Input reaching storage or shell**: if a change replaces the in-memory
-  `UserRepositoryAdapter` with a real database, file system or process call,
-  check for injection and path traversal at that boundary.
-- **Logging**: `LoggingBus` prints every request's class and timing to stdout.
-  If a new command carries sensitive fields, flag logging that would print
-  them.
-- **Data exposure**: responses or logs that leak more than the endpoint's
-  contract needs.
+- **Access control**: every new or changed endpoint, handler or query checks who
+  the caller is and that they own what they touch. Database or storage rules
+  that open data to the wrong readers.
+- **Input**: user input is validated, and never reaches SQL, shell commands,
+  file paths or templates unescaped.
+- **XSS**: raw HTML rendering, markdown rendering, and user-supplied strings put
+  into the DOM, URLs or meta tags.
+- **Data exposure**: responses, logs or public documents that leak ids, emails,
+  tokens or internal errors.
+- **Payments and identity**: anything that can grant access, skip a webhook
+  signature check, or change who a user is.
+- **Abuse**: public endpoints that can be spammed without a rate limit.
 - **Secrets**: keys, credentials or `.env` values in commits.
-- **Dependencies**: new entries in `build.gradle.kts`, and whether they're
-  needed and maintained.
+- **Dependencies**: new packages, and whether they are needed and maintained.
 
 ## Write review-security.md
 
