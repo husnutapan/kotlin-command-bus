@@ -5,17 +5,19 @@ pattern: REST controllers dispatch `Request` objects through a `Bus` to
 `Handler`s, resolved from Spring's `ApplicationContext` via a
 reflection-based `Registry` (`src/main/kotlin/com/example/kotlincommandbus/config/`).
 
-## User endpoints
+## Endpoints
 
 - `POST /api/user`: save a user (command `SaveUserCommand`, `application/saveuser`)
 - `GET /api/user/{id}`: get a user by id, 404 if unknown, 400 if not a UUID
   (query `GetUserByIdQuery`, `application/getuser`)
 - `GET /api/user`: list all users (query `ListUsersQuery`, `application/listusers`)
+- `GET /api/health`: health check, always `{"status":"UP"}` while the app runs (query `HealthCheckQuery`, `application/healthcheck`)
 
 Writes are commands in `application/saveuser`; reads are queries in
 `application/getuser` and `application/listusers`. `UserController` dispatches
 all of them through `LoggingBus` and never calls a handler or `UserPort`
-directly. A new use case is a `Request` plus a `@Component` `Handler` in its own
+directly. `HealthController` likewise sends `HealthCheckQuery` only through
+`LoggingBus` and never calls its handler directly. A new use case is a `Request` plus a `@Component` `Handler` in its own
 `application/<usecase>` package; `Registry` picks it up automatically.
 
 ## Setup
